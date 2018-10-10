@@ -1,5 +1,7 @@
 package learn.datastructure;
 
+import java.util.Stack;
+
 /* Assumed as Singly LinkedList */
 public class SinglyLinkedList {
 
@@ -60,8 +62,9 @@ public class SinglyLinkedList {
 	}
 
 	/* Remove from particular Position in LinkedList */
-	public void removElementFromParticularPostion(int postion) {
-		int pos = postion;
+	public int removElementFromParticularPostion(int postion) {
+		
+		int pos = postion, element = -1;
 		if (head == null && pos <= 0)			
 			System.out.println("Nothing to empty in Linkedlist!!");
 
@@ -73,14 +76,39 @@ public class SinglyLinkedList {
 		}
 
 		if (temp.next != null && temp.next.next != null && pos == 1) {
+			element = head.value;
 			head = temp.next;
 		} else if(temp.next != null && pos == 1){
+			element = prev.next.value;
 			prev.next = temp.next;
 		}else if(temp.next == null && pos == 1){
+			element = temp.value;
 			prev.next = null;
 		}else {
 			System.out.println("Nothing to delete at position : "+ postion);
 		}
+		
+		return element;
+	}
+	
+	/* Search element and return postion */
+	public int indexOf(int val) {
+		if(head == null)
+			return -1;
+		
+		int index = 1;
+		if(head.value == val)
+			return index; 
+		
+		Node temp = head;
+		while(temp.next !=null) {
+			++index;
+			temp = temp.next;
+			if(temp.value == val) {
+				return index;
+			}
+		}
+		return -1;
 	}
 
 	/* Printing the Linked list stack */
@@ -97,16 +125,54 @@ public class SinglyLinkedList {
 			System.out.println("Linked List is empty!!");
 		}
 	}
+	
+	/* Check Pallindrome using Stack*/
+	public boolean checkPallindrome() {
+		
+		if(head == null)
+			return false;
+		
+		if(head.next == null)
+			return true;
+		
+		Stack<Integer> stack =  new Stack<>();
+		Node temp = head;
+		
+		do {
+			stack.push(temp.value);
+			temp = temp.next;
+		}while(temp != null );
+			
+		temp = head;
+				
+		while(temp != null && temp.value == stack.pop()) {
+			temp = temp.next;
+		}
+		
+		if(stack.isEmpty())
+			return true;
+		
+		return false;
+	}
 
 	public static void main(String[] args) {
-		SinglyLinkedList duplicate = new SinglyLinkedList();
-		duplicate.printLinkedList();
-		duplicate.addToLinkedList(1, 5);
-		duplicate.addToLinkedList(1, 7);
-		duplicate.addToLinkedList(1, 9);
-		duplicate.printLinkedList();
-		// position starts from 1 onwards
-		duplicate.removElementFromParticularPostion(4);
-		duplicate.printLinkedList();
+		SinglyLinkedList linkedList = new SinglyLinkedList();
+		//Initially Empty
+		linkedList.printLinkedList();
+		// Adding Items
+		linkedList.addToLinkedList(1, 5);
+		linkedList.addToLinkedList(1, 7);
+		linkedList.addToLinkedList(1, 9);
+		// Print Linked list
+		linkedList.printLinkedList();
+		// Position starts from 1 onwards
+		System.out.println("Element at position 3 : "+ linkedList.removElementFromParticularPostion(3));
+		linkedList.printLinkedList();
+		
+		// find first index of element
+		System.out.println("Index of 9 element "+ linkedList.indexOf(7));
+		//Check Palindrome
+		linkedList.addToLinkedList(1, 5);
+		System.out.println("Checking Pallindrome :"+ linkedList.checkPallindrome());
 	}
 }
