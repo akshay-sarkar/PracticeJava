@@ -45,14 +45,20 @@ class Node{
 }
 class BinaryTree{
 	
-	Node root, temp;
+	Node root;
+	int currentSize;
 	
 	public BinaryTree(int rootVal) {
 		root = new Node(rootVal);
+		++currentSize;
 	}
 	
 	public Node getRoot(){
 		return root;
+	}
+	
+	public int getSize() {
+		return currentSize;
 	}
 	
 	public void insert(Node node, int data) {
@@ -62,6 +68,7 @@ class BinaryTree{
 				insert(node.getLeftTree(), data);
 			}else {
 				node.setLeftTree(new Node(data, null, null));
+				++currentSize;
 				return ;
 			}			
 		}else {
@@ -70,6 +77,7 @@ class BinaryTree{
 				insert(node.getRightTree(), data);
 			}else {
 				node.setRightTree(new Node(data, null, null));
+				++currentSize;
 				return ;
 			}
 		}
@@ -116,6 +124,38 @@ class BinaryTree{
 		preOrderTraversal(node.getRightTree());
 		System.out.print(node.getValue() + " ");
 	}
+	
+	
+	public boolean searchNode(Node node, int data) {
+		
+		if(node.getValue() == data) {
+			return true;
+		}
+		
+		if(node.getValue() > data) {
+			if(node.getLeftTree() != null) {
+				return searchNode(node.getLeftTree(), data);
+			}else {
+				return false;
+			}
+		}else {
+			
+			if(node.getRightTree() != null ) {
+				return searchNode(node.getRightTree(), data);
+			}else {
+				return false;
+			}
+		}
+	}
+	
+	public boolean ifExist(int data) {
+		if(root == null ) {
+			System.out.println("Tree is empty");
+			return false;
+		}
+		return searchNode(root, data);
+	}
+
 }
 
 public class TreeStructureImplementation {
@@ -135,6 +175,10 @@ public class TreeStructureImplementation {
 			
 			System.out.println("\nPost-Order Traversal : ");
 			bTree.postOrderTraversal(bTree.getRoot());
+			
+			System.out.println("\nCurrent Size : "+ bTree.getSize());
+			
+			System.out.println("\nIf Exist- 5 : "+ bTree.ifExist(5));
 	}
 
 }
